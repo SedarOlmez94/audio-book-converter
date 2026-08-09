@@ -1,16 +1,13 @@
-'''
+"""
 Description: This module provides functionality to convert PDF files to text.
 Author: Sedar Olmez
 Date: 09/08/2026
-'''
+"""
 
 import pymupdf
 
 
-
 class PDFToTextConverter:
-
-
 
     def __init__(self, pdf_path: str) -> None:
         """
@@ -19,8 +16,6 @@ class PDFToTextConverter:
         :param pdf_path: Path to the PDF file to be converted.
         """
         self.pdf_path = pdf_path
-
-
 
     def convert_to_text(self) -> str:
         text = ""
