@@ -2,8 +2,8 @@
 
 The program should be able to do the following in version 1:
 
-1. Takes as input a .pdf file.
-2. Extract the text data into a datastructure.
+1. Takes as input a .pdf file. ☑️
+2. Extract the text data into a datastructure. ☑️ 
 3. Read the text at a set pace with a set voice.
 
 
