@@ -7,14 +7,12 @@ Date: 09/08/2026
 
 
 
-
+from pdf_to_text import PDFToTextConverter
 
 
 
 
 if __name__ == "__main__":
-    # Example usage of the classes defined in this module
-    from src.classes.example_class import ExampleClass
-
-    example_instance = ExampleClass()
-    example_instance.run()
+    pdf_converter = PDFToTextConverter("document.pdf")
+    text = pdf_converter.convert_to_text()
+    print(text)

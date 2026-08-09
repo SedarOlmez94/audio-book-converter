@@ -23,7 +23,8 @@ class PDFToTextConverter:
 
 
     def convert_to_text(self) -> str:
-
+        text = ""
         doc = pymupdf.open(self.pdf_path)
         for page in doc:
-            print(page.get_text())
+            text += page.get_text()
+        return text
