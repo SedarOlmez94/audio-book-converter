@@ -4,6 +4,8 @@ Author: Sedar Olmez
 Date: 09/08/2026
 '''
 
+import pymupdf
+
 
 
 class PDFToTextConverter:
@@ -17,3 +19,11 @@ class PDFToTextConverter:
         :param pdf_path: Path to the PDF file to be converted.
         """
         self.pdf_path = pdf_path
+
+
+
+    def convert_to_text(self) -> str:
+
+        doc = pymupdf.open(self.pdf_path)
+        for page in doc:
+            print(page.get_text())
