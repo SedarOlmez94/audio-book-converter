@@ -11,5 +11,4 @@ if __name__ == "__main__":
     # text = pdf_converter.convert_to_text()
     pdf_converter.build_book_from_pdf()
 
-    
     print(pdf_converter.get_book(2))
