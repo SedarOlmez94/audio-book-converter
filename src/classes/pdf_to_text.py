@@ -34,7 +34,9 @@ class PDFToTextConverter:
             i += 1
 
     def get_book(self, page: int) -> dict[int, str]:
-        return {page: self.saved_book[page] if page in self.saved_book else "Page not found."}
-                # return some page, within the dict saved_book if page exists in the saved_book object as a key, else return "Page not found."
-            
-    
+        return {
+            page: (
+                self.saved_book[page] if page in self.saved_book else "Page not found."
+            )
+        }
+        # return some page, within the dict saved_book if page exists in the saved_book object as a key, else return "Page not found."
