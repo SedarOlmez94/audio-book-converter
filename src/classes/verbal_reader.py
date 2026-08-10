@@ -32,3 +32,13 @@ class VerbalReader:
 
     def set_volume(self, volume: float) -> None:
         self.engine.setProperty("volume", volume)
+
+    def get_current_voice(self) -> any:
+        return self.engine.getProperty("voices")
+
+    def set_voice(self, option: str) -> None:
+
+        match option:
+            case "female":
+                self.engine.setProperty('voice', 'com.apple.speech.synthesis.voice.samantha')
+                      

@@ -24,6 +24,9 @@ if __name__ == "__main__":
     print(epub_metadata)
     epub_script = epub_object.get_script(epub_book)
     # print(epub_script)
+
+    selected_voice = verbal_reader.set_voice("female") # Needs work.
+    print(f"Selected voice id: {selected_voice}")
     verbal_reader.read_text(
         "Hello, this is a test of the verbal reader module. The text is being read aloud using the pyttsx3 library."
     )
