@@ -15,7 +15,6 @@ class EPUBToTextConverter:
     def __init__(self, epub_path: str) -> None:
         self.epub_path = epub_path
 
-
     def get_ebook(self) -> epub.EpubBook:
         """
         Loads the EPUB file and returns an EpubBook object.
@@ -33,11 +32,31 @@ class EPUBToTextConverter:
         :return: A dictionary containing the metadata of the EPUB file.
         """
         metadata = {
-            "title": book.get_metadata("DC", "title")[0][0] if book.get_metadata("DC", "title") else "Unknown",
-            "author": book.get_metadata("DC", "creator")[0][0] if book.get_metadata("DC", "creator") else "Unknown",
-            "language": book.get_metadata("DC", "language")[0][0] if book.get_metadata("DC", "language") else "Unknown",
-            "publisher": book.get_metadata("DC", "publisher")[0][0] if book.get_metadata("DC", "publisher") else "Unknown",
-            "description": book.get_metadata("DC", "description")[0][0] if book.get_metadata("DC", "description") else "No description available.",
+            "title": (
+                book.get_metadata("DC", "title")[0][0]
+                if book.get_metadata("DC", "title")
+                else "Unknown"
+            ),
+            "author": (
+                book.get_metadata("DC", "creator")[0][0]
+                if book.get_metadata("DC", "creator")
+                else "Unknown"
+            ),
+            "language": (
+                book.get_metadata("DC", "language")[0][0]
+                if book.get_metadata("DC", "language")
+                else "Unknown"
+            ),
+            "publisher": (
+                book.get_metadata("DC", "publisher")[0][0]
+                if book.get_metadata("DC", "publisher")
+                else "Unknown"
+            ),
+            "description": (
+                book.get_metadata("DC", "description")[0][0]
+                if book.get_metadata("DC", "description")
+                else "No description available."
+            ),
         }
         return metadata
 
@@ -47,4 +66,3 @@ class EPUBToTextConverter:
             content = doc.get_content()
             text += content.decode("utf-8")
         return text
-    
