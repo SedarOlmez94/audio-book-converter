@@ -40,4 +40,11 @@ class EPUBToTextConverter:
             "description": book.get_metadata("DC", "description")[0][0] if book.get_metadata("DC", "description") else "No description available.",
         }
         return metadata
+
+    def get_script(self, book: epub.EpubBook) -> str:
+        text = ""
+        for doc in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
+            content = doc.get_content()
+            text += content.decode("utf-8")
+        return text
     

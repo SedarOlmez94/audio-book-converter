@@ -18,3 +18,5 @@ if __name__ == "__main__":
     epub_book = epub_object.get_ebook()
     epub_metadata = epub_object.get_metadata(epub_book)
     print(epub_metadata)
+    epub_script = epub_object.get_script(epub_book)
+    print(epub_script)
