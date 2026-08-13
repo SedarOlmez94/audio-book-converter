@@ -1,44 +1,40 @@
 """
 Module for converting text to speech.
 Date 10/08/2026
+Updated: 13/08/2026
 """
 
-import pyttsx3
 
+import os
+
+import torchaudio as ta
+import torch
+from chatterbox.tts_turbo import ChatterboxTurboTTS
+from dotenv import load_dotenv
+load_dotenv()
+
+# The Hugging Face Hub reads the token from HF_TOKEN, not the name used in .env,
+# so forward it explicitly. Without this the download can hang at 0.00B.
+hf_token = os.getenv("HUGGING_FACE_ACCESS_TOKEN")
+if hf_token:
+    os.environ["HF_TOKEN"] = hf_token
+# hf_transfer often stalls downloads at "Fetching ... 0%" / 0.00B; disable it
+# so the standard, reliable downloader is used.
+os.environ["HF_HUB_ENABLE_HF_TRANSFER"] = "0"
 
 class VerbalReader:
 
     def __init__(self) -> None:
-        self.engine = pyttsx3.init()
+        self.model = ChatterboxTurboTTS.from_pretrained(device="cpu")
 
-    def read_text(self, text: str) -> None:
-        """
-        Reads the provided text aloud.
+    def play_new_voice(self, voice_ref: str) -> any:
+        wav = self.model.generate(self.text, audio_prompt_path=voice_ref)
+        return wav
 
-        :param text: The text to be read aloud.
-        """
-        self.engine.say(text)
-        self.engine.runAndWait()
+    def set_text_to_read(self, text: str) -> None:
+        self.text = text
 
 
-    def get_current_rate(self) -> int:
-        return self.engine.getProperty("rate")
 
-    def set_rate(self, rate: int) -> None:
-        self.engine.setProperty("rate", rate)
-
-    def get_current_volume(self) -> float:
-        return self.engine.getProperty("volume")
-
-    def set_volume(self, volume: float) -> None:
-        self.engine.setProperty("volume", volume)
-
-    def get_current_voice(self) -> any:
-        return self.engine.getProperty("voices")
-
-    def set_voice(self, option: str) -> None:
-
-        match option:
-            case "female":
-                self.engine.setProperty('voice', 'com.apple.speech.synthesis.voice.samantha')
+    
                       
