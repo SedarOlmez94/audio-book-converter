@@ -21,12 +21,20 @@ class VerbalReader:
 
     def __init__(self) -> None:
         authenticate_hf()
-        
+
         self.model = ChatterboxTurboTTS.from_pretrained(device="cpu")
 
     def play_new_voice(self, voice_ref: str) -> any:
-        wav = self.model.generate(self.text, audio_prompt_path=voice_ref)
-        return wav
+        self.wav = self.model.generate(self.text, audio_prompt_path=voice_ref)
+        return self.wav
 
     def set_text_to_read(self, text: str) -> None:
         self.text = text
+
+    def save_audio(self, output_path: str) -> None:
+        """Save the generated audio to a file."""
+        if hasattr(self, "wav"):
+            ta.save(output_path, self.wav, self.model.sr)
+        else:
+            raise ValueError("No audio generated. Call play_new_voice() first.")
+
