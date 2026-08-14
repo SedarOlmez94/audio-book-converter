@@ -4,27 +4,24 @@ Date 10/08/2026
 Updated: 13/08/2026
 """
 
-
 import os
+
+# huggingface_hub 1.x uses the Xet backend by default (hf_xet). On macOS this can
+# hang downloads at "Reconstructing (incomplete total...)" / 0.00B. Disable Xet so
+# the standard HTTP downloader is used. Must be set before huggingface_hub is imported.
+os.environ["HF_HUB_DISABLE_XET"] = "1"
 
 import torchaudio as ta
 import torch
 from chatterbox.tts_turbo import ChatterboxTurboTTS
-from dotenv import load_dotenv
-load_dotenv()
+from utils.config import authenticate_hf, get_hf_token
 
-# The Hugging Face Hub reads the token from HF_TOKEN, not the name used in .env,
-# so forward it explicitly. Without this the download can hang at 0.00B.
-hf_token = os.getenv("HUGGING_FACE_ACCESS_TOKEN")
-if hf_token:
-    os.environ["HF_TOKEN"] = hf_token
-# hf_transfer often stalls downloads at "Fetching ... 0%" / 0.00B; disable it
-# so the standard, reliable downloader is used.
-os.environ["HF_HUB_ENABLE_HF_TRANSFER"] = "0"
 
 class VerbalReader:
 
     def __init__(self) -> None:
+        authenticate_hf()
+        
         self.model = ChatterboxTurboTTS.from_pretrained(device="cpu")
 
     def play_new_voice(self, voice_ref: str) -> any:
@@ -33,8 +30,3 @@ class VerbalReader:
 
     def set_text_to_read(self, text: str) -> None:
         self.text = text
-
-
-
-    
-                      
