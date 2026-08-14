@@ -1,44 +1,40 @@
 """
 Module for converting text to speech.
 Date 10/08/2026
+Updated: 13/08/2026
 """
 
-import pyttsx3
+import os
+
+# huggingface_hub 1.x uses the Xet backend by default (hf_xet). On macOS this can
+# hang downloads at "Reconstructing (incomplete total...)" / 0.00B. Disable Xet so
+# the standard HTTP downloader is used. Must be set before huggingface_hub is imported.
+os.environ["HF_HUB_DISABLE_XET"] = "1"
+
+import torchaudio as ta
+import torch
+from chatterbox.tts_turbo import ChatterboxTurboTTS
+from utils.config import authenticate_hf, get_hf_token
 
 
 class VerbalReader:
 
     def __init__(self) -> None:
-        self.engine = pyttsx3.init()
+        authenticate_hf()
 
-    def read_text(self, text: str) -> None:
-        """
-        Reads the provided text aloud.
+        self.model = ChatterboxTurboTTS.from_pretrained(device="cpu")
 
-        :param text: The text to be read aloud.
-        """
-        self.engine.say(text)
-        self.engine.runAndWait()
+    def play_new_voice(self, voice_ref: str) -> any:
+        self.wav = self.model.generate(self.text, audio_prompt_path=voice_ref)
+        return self.wav
 
+    def set_text_to_read(self, text: str) -> None:
+        self.text = text
 
-    def get_current_rate(self) -> int:
-        return self.engine.getProperty("rate")
+    def save_audio(self, output_path: str) -> None:
+        """Save the generated audio to a file."""
+        if hasattr(self, "wav"):
+            ta.save(output_path, self.wav, self.model.sr)
+        else:
+            raise ValueError("No audio generated. Call play_new_voice() first.")
 
-    def set_rate(self, rate: int) -> None:
-        self.engine.setProperty("rate", rate)
-
-    def get_current_volume(self) -> float:
-        return self.engine.getProperty("volume")
-
-    def set_volume(self, volume: float) -> None:
-        self.engine.setProperty("volume", volume)
-
-    def get_current_voice(self) -> any:
-        return self.engine.getProperty("voices")
-
-    def set_voice(self, option: str) -> None:
-
-        match option:
-            case "female":
-                self.engine.setProperty('voice', 'com.apple.speech.synthesis.voice.samantha')
-                      
