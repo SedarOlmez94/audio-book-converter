@@ -21,7 +21,6 @@ class VerbalReader:
 
     def __init__(self) -> None:
         authenticate_hf()
-
         self.model = ChatterboxTurboTTS.from_pretrained(device="cpu")
 
     def play_new_voice(self, voice_ref: str) -> any:

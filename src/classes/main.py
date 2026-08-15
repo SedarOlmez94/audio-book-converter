@@ -19,20 +19,20 @@ if __name__ == "__main__":
 
     # OBJECTS
     epub_object = EPUBToTextConverter("../../docs/hemingway-old-man-and-the-sea.epub")
-    verbal_reader = VerbalReader()
+    # verbal_reader = VerbalReader()
 
     epub_book = epub_object.get_ebook()
     epub_metadata = epub_object.get_metadata(epub_book)
     print(epub_metadata)
     epub_script = epub_object.get_script(epub_book)
-    # print(epub_script)
+    epub_object.download_book_as_text(epub_book, "hemingway-old-man-and-the-sea.txt")
 
-    verbal_reader.set_text_to_read(text)
+    # verbal_reader.set_text_to_read(text)
     # Chatterbox Turbo requires a ~10s reference audio clip to clone a voice from.
     # Without it, generation produces no audio (stays at 0). Point this at a real .wav file.
-    verbal_reader.play_new_voice("../../data/gandalf.wav")
+    # verbal_reader.play_new_voice("../../data/gandalf.wav")
 
-    verbal_reader.save_audio("../../data/output.wav")
+    # verbal_reader.save_audio("../../data/output.wav")
 
     # Legacy code, need to change - 13/08/2026
     # selected_voice = verbal_reader.set_voice("female") # Needs work.

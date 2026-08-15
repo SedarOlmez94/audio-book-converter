@@ -8,6 +8,8 @@ from pathlib import Path
 
 import ebooklib
 from ebooklib import epub
+from html_filter import HTMLFilter
+from html.parser import HTMLParser
 
 
 class EPUBToTextConverter:
@@ -66,3 +68,15 @@ class EPUBToTextConverter:
             content = doc.get_content()
             text += content.decode("utf-8")
         return text
+
+    def download_book_as_text(self, book: epub.EpubBook, output_name: str) -> None:
+        content = ""
+        for item in book.get_items():
+            if item.get_type() == ebooklib.ITEM_DOCUMENT:
+                bodyContent = item.get_body_content().decode()
+                f = HTMLFilter()
+                f.feed(bodyContent)
+                content += f.text
+
+        with open(output_name, 'w', encoding='utf-8') as fout:
+            fout.write(content)
